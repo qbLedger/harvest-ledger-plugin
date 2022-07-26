@@ -10,10 +10,11 @@ void handle_query_contract_id(void *parameters) {
     // For the first screen, display the plugin name.
     strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
-    // EDIT THIS: Adapt the cases by modifying the strings you pass to `strlcpy`.
-    if (context->selectorIndex == SWAP_EXACT_ETH_FOR_TOKENS) {
-        strlcpy(msg->version, "Swap", msg->versionLength);
-        msg->result = ETH_PLUGIN_RESULT_OK;
+    msg->result = ETH_PLUGIN_RESULT_OK;
+    if (context->selectorIndex == VAULT_DEPOSIT) {
+        strlcpy(msg->version, "Deposit", msg->versionLength);
+    } else if (context->selectorIndex == VAULT_WITHDRAW) {
+        strlcpy(msg->version, "Withdraw", msg->versionLength);
     } else {
         PRINTF("Selector index: %d not supported\n", context->selectorIndex);
         msg->result = ETH_PLUGIN_RESULT_ERROR;

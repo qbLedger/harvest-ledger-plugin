@@ -20,6 +20,7 @@ typedef enum {
 // Enumeration used to parse the smart contract data.
 typedef enum {
     AMOUNT = 0,
+    UNEXPECTED_PARAMETER
 } parameter;
 
 extern const uint32_t HARVEST_SELECTORS[NUM_SELECTORS];
@@ -30,8 +31,6 @@ extern const uint32_t HARVEST_SELECTORS[NUM_SELECTORS];
 typedef struct context_t {
     // For display.
     uint8_t amount[INT256_LENGTH];
-    uint8_t beneficiary[ADDRESS_LENGTH];
-    uint8_t token_received[ADDRESS_LENGTH];
     char ticker[MAX_TICKER_LEN];
     uint8_t decimals;
     uint8_t token_found;

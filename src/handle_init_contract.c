@@ -45,11 +45,11 @@ void handle_init_contract(void *parameters) {
     // EDIT THIS: Adapt the `cases`, and set the `next_param` to be the first parameter you expect
     // to parse.
     switch (context->selectorIndex) {
-        case SWAP_EXACT_ETH_FOR_TOKENS:
-            context->next_param = MIN_amount;
+        case VAULT_DEPOSIT:
+            context->next_param = AMOUNT;
             break;
-        case HARVEST_DUMMY_2:
-            context->next_param = TOKEN_RECEIVED;
+        case VAULT_WITHDRAW:
+            context->next_param = AMOUNT;
             break;
         // Keep this
         default:

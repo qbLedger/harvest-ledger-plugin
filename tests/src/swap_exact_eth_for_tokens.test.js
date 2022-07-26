@@ -5,9 +5,9 @@ import { ethers } from "ethers";
 import { parseEther, parseUnits} from "ethers/lib/utils";
 
 // EDIT THIS: Replace with your contract address
-const contractAddr = "0x7a250d5630b4cf539739df2c5dacb4c659f2488d";
+const contractAddr = "0xab7fa2b2985bccfc13c6d86b1d5a17486ab1e04c";
 // EDIT THIS: Replace `boilerplate` with your plugin name
-const pluginName = "boilerplate";
+const pluginName = "harvest";
 const abi_path = `../${pluginName}/abis/` + contractAddr + '.json';
 const abi = require(abi_path);
 
@@ -85,4 +85,3 @@ nano_models.forEach(function(model) {
   await tx;
   }));
 });
-

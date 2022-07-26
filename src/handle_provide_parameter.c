@@ -1,6 +1,8 @@
 #include "harvest_plugin.h"
 
 // EDIT THIS: Remove this function and write your own handlers!
+// TODO remove
+/*
 static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg, context_t *context) {
     if (context->go_to_offset) {
         if (msg->parameterOffset != context->offset + SELECTOR_SIZE) {
@@ -9,7 +11,7 @@ static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg, c
         context->go_to_offset = false;
     }
     switch (context->next_param) {
-        case MIN_amount:  // amountOutMin
+        case AMOUNT:  // amountOutMin
             copy_parameter(context->amount,
                            msg->parameter,
                            sizeof(context->amount));
@@ -40,6 +42,31 @@ static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg, c
             break;
     }
 }
+ */
+
+static void handle_amount(ethPluginProvideParameter_t *msg, context_t *context) {
+    if (context->go_to_offset) {
+        if (msg->parameterOffset != context->offset + SELECTOR_SIZE) {
+            return;
+        }
+        context->go_to_offset = false;
+    }
+    switch (context->next_param) {
+        case AMOUNT:
+            copy_parameter(context->amount,
+                           msg->parameter,
+                           sizeof(context->amount));
+
+            context->next_param = UNEXPECTED_PARAMETER;
+            break;
+        // Keep this
+        default:
+            PRINTF("Param not supported: %d\n", context->next_param);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
@@ -54,12 +81,12 @@ void handle_provide_parameter(void *parameters) {
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
-    // EDIT THIS: adapt the cases and the names of the functions.
     switch (context->selectorIndex) {
-        case SWAP_EXACT_ETH_FOR_TOKENS:
-            handle_swap_exact_eth_for_tokens(msg, context);
+        case VAULT_DEPOSIT:
+            handle_amount(msg, context);
             break;
-        case HARVEST_DUMMY_2:
+        case VAULT_WITHDRAW:
+            handle_amount(msg, context);
             break;
         default:
             PRINTF("Selector Index not supported: %d\n", context->selectorIndex);
