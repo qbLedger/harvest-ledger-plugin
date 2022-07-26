@@ -1,4 +1,4 @@
-#include "boilerplate_plugin.h"
+#include "harvest_plugin.h"
 
 // EDIT THIS: Remove this function and write your own handlers!
 static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg, context_t *context) {
@@ -9,10 +9,10 @@ static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg, c
         context->go_to_offset = false;
     }
     switch (context->next_param) {
-        case MIN_AMOUNT_RECEIVED:  // amountOutMin
-            copy_parameter(context->amount_received,
+        case MIN_amount:  // amountOutMin
+            copy_parameter(context->amount,
                            msg->parameter,
-                           sizeof(context->amount_received));
+                           sizeof(context->amount));
             context->next_param = PATH_OFFSET;
             break;
         case PATH_OFFSET:  // path
@@ -59,7 +59,7 @@ void handle_provide_parameter(void *parameters) {
         case SWAP_EXACT_ETH_FOR_TOKENS:
             handle_swap_exact_eth_for_tokens(msg, context);
             break;
-        case BOILERPLATE_DUMMY_2:
+        case HARVEST_DUMMY_2:
             break;
         default:
             PRINTF("Selector Index not supported: %d\n", context->selectorIndex);

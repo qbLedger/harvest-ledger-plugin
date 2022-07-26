@@ -1,4 +1,4 @@
-#include "boilerplate_plugin.h"
+#include "harvest_plugin.h"
 
 // EDIT THIS: You need to adapt / remove the static functions (set_send_ui, set_receive_ui ...) to
 // match what you wish to display.
@@ -30,8 +30,8 @@ static void set_receive_ui(ethQueryContractUI_t *msg, const context_t *context) 
         ticker = msg->network_ticker;
     }
 
-    amountToString(context->amount_received,
-                   sizeof(context->amount_received),
+    amountToString(context->amount,
+                   sizeof(context->amount),
                    decimals,
                    ticker,
                    msg->msg,
