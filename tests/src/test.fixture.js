@@ -31,7 +31,7 @@ const nano_models: DeviceModel[] = [
     { name: 'nanos', letter: 'S', path: NANOS_PLUGIN_PATH, eth_path: NANOS_ETH_PATH },
     { name: 'nanosp', letter: 'SP', path: NANOSP_PLUGIN_PATH, eth_path: NANOSP_ETH_PATH },
     { name: 'nanox', letter: 'X', path: NANOX_PLUGIN_PATH, eth_path: NANOX_ETH_PATH }
-].slice(2); // TODO remove slice
+]
 
 
 const boilerplateJSON = generate_plugin_config();

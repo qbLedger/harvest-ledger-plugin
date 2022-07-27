@@ -6,7 +6,7 @@ import { parseEther, parseUnits} from "ethers/lib/utils";
 
 export const testAmount1_18 = parseUnits("1.2345", '18');
 
-export async function testRawTx(method, rawTx) {
+export function testRawTx(method, rawTx, additionalScreensS = 0, additionalScreensSPX = 0) {
   nano_models.forEach(function (model) {
     test('[Nano ' + model.letter + '] '+method+' raw_tx', zemu(model, async (sim, eth) => {
 
@@ -17,7 +17,9 @@ export async function testRawTx(method, rawTx) {
         serializedTx,
       );
 
-      const right_clicks = model.letter === 'S' ? 12 : 5;
+      const right_clicks = model.letter === 'S'
+        ? 5 + additionalScreensS
+        : 5 + additionalScreensSPX;
 
       // Wait for the application to actually load and parse the transaction
       await waitForAppScreen(sim);
@@ -30,7 +32,7 @@ export async function testRawTx(method, rawTx) {
 }
 
 // Test from constructed transaction
-export async function testTxWithAmount(contractAddr, abi, method, amount) {
+export function testTxWithAmount(contractAddr, abi, method, amount, additionalScreensS = 0, additionalScreensSPX = 0) {
 
   nano_models.forEach(function (model) {
     test('[Nano ' + model.letter + '] '+method, zemu(model, async (sim, eth) => {
@@ -58,7 +60,9 @@ export async function testTxWithAmount(contractAddr, abi, method, amount) {
         serializedTx
       );
 
-      const right_clicks = model.letter === 'S' ? 7 : 5;
+      const right_clicks = model.letter === 'S'
+        ? 5 + additionalScreensS
+        : 5 + additionalScreensSPX;
 
       // Wait for the application to actually load and parse the transaction
       await waitForAppScreen(sim);

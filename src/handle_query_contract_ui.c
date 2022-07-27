@@ -51,22 +51,31 @@ static void set_amount(ethQueryContractUI_t *msg, const context_t *context) {
 static void set_destination_ui(ethQueryContractUI_t *msg, context_t *context) {
     strlcpy(msg->title, "Vault", msg->titleLength);
 
-    // TODO Show symbol / ticker when possible
+
+
     // Prefix the address with `0x`.
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
 
-    // We need a random chainID for legacy reasons with `getEthAddressStringFromBinary`.
-    // Setting it to `0` will make it work with every chainID :)
     uint64_t chainid = 0;
 
-    // Get the string representation of the address stored in `context->beneficiary`. Put it in
-    // `msg->msg`.
     getEthAddressStringFromBinary(
         msg->pluginSharedRO->txContent->destination,
         msg->msg + 2,  // +2 here because we've already prefixed with '0x'.
         msg->pluginSharedRW->sha3,
         chainid);
+    PRINTF("MSG Address: %s\n", msg->msg); // TODO remove
+
+    // make short representation of the address
+    char *m = msg->msg;
+    m[6] = '.';
+    m[7] = '.';
+    m[8] = '.';
+    m[9] = m[38];
+    m[10] = m[39];
+    m[11] = m[40];
+    m[12] = m[41];
+    m[13] = '\0';
 }
 
 void handle_query_contract_ui(void *parameters) {
