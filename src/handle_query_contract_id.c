@@ -1,5 +1,9 @@
 #include "harvest_plugin.h"
 
+void set_msg(ethQueryContractID_t *msg, char *text) {
+    strlcpy(msg->version, text, msg->versionLength);
+}
+
 // Sets the first screen to display.
 void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
@@ -11,12 +15,19 @@ void handle_query_contract_id(void *parameters) {
     strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
     msg->result = ETH_PLUGIN_RESULT_OK;
-    if (context->selectorIndex == VAULT_DEPOSIT) {
-        strlcpy(msg->version, "Deposit", msg->versionLength);
-    } else if (context->selectorIndex == VAULT_WITHDRAW) {
-        strlcpy(msg->version, "Withdraw", msg->versionLength);
-    } else {
-        PRINTF("Selector index: %d not supported\n", context->selectorIndex);
-        msg->result = ETH_PLUGIN_RESULT_ERROR;
+    selector_t selectorIndex = context->selectorIndex;
+
+    switch (selectorIndex) {
+        case VAULT_DEPOSIT:    set_msg(msg, "Deposit");  break;
+        case VAULT_WITHDRAW:   set_msg(msg, "Withdraw"); break;
+        case VAULT_APPROVE:    set_msg(msg, "Approve");  break;
+        case POOL_STAKE:       set_msg(msg, "Stake");    break;
+        case POOL_EXIT:        set_msg(msg, "Exit");     break;
+        case POOL_GET_REWARDS: set_msg(msg, "Claim");    break;
+        default:
+            PRINTF("Selector index: %d not supported\n", selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
     }
+
 }

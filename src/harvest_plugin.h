@@ -5,7 +5,7 @@
 #include <string.h>
 
 // Number of selectors defined in this plugin. Should match the enum `selector_t`.
-#define NUM_SELECTORS 2
+#define NUM_SELECTORS 6
 
 // Name of the plugin.
 #define PLUGIN_NAME "Harvest"
@@ -15,6 +15,10 @@
 typedef enum {
     VAULT_DEPOSIT = 0,
     VAULT_WITHDRAW,
+    VAULT_APPROVE,
+    POOL_STAKE,
+    POOL_GET_REWARD,
+    POOL_EXIT
 } selector_t;
 
 // Enumeration used to parse the smart contract data.

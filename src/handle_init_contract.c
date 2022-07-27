@@ -47,8 +47,16 @@ void handle_init_contract(void *parameters) {
     switch (context->selectorIndex) {
         case VAULT_DEPOSIT:
         case VAULT_WITHDRAW:
+        case VAULT_APPROVE:
+        case POOL_STAKE:
             context->next_param = AMOUNT;
             break;
+
+        case POOL_GET_REWARD:
+        case POOL_EXIT:
+            context->next_param = UNEXPECTED_PARAMETER;
+            break;
+
         // Keep this
         default:
             PRINTF("Missing selectorIndex: %d\n", context->selectorIndex);
@@ -58,9 +66,9 @@ void handle_init_contract(void *parameters) {
 
     // Fill context underlying and vault ticker/decimals
     // TODO make hardcoded list of vaults/pools
-    strlcpy(context->underlying_ticker, "UNDERLYING ", sizeof(context->underlying_ticker));
+    strlcpy(context->underlying_ticker, "UND ", sizeof(context->underlying_ticker));
     context->underlying_decimals = 18;
-    strlcpy(context->vault_ticker, "LP ", sizeof(context->vault_ticker));
+    strlcpy(context->vault_ticker, "LPT ", sizeof(context->vault_ticker));
     context->vault_decimals = 18;
 
     // Return valid status.

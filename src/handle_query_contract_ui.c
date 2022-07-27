@@ -93,10 +93,10 @@ void handle_query_contract_ui(void *parameters) {
 
     switch (msg->screenIndex) {
         case 0:
-            set_amount(msg, context);
+            set_destination_ui(msg, context);
             break;
         case 1:
-            set_destination_ui(msg, context);
+            set_amount(msg, context);
             break;
         // Keep this
         default:
