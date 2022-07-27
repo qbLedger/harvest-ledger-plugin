@@ -46,8 +46,6 @@ void handle_init_contract(void *parameters) {
     // to parse.
     switch (context->selectorIndex) {
         case VAULT_DEPOSIT:
-            context->next_param = AMOUNT;
-            break;
         case VAULT_WITHDRAW:
             context->next_param = AMOUNT;
             break;
@@ -57,6 +55,13 @@ void handle_init_contract(void *parameters) {
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
+
+    // Fill context underlying and vault ticker/decimals
+    // TODO make hardcoded list of vaults/pools
+    strlcpy(context->underlying_ticker, "UNDERLYING ", sizeof(context->underlying_ticker));
+    context->underlying_decimals = 18;
+    strlcpy(context->vault_ticker, "LP ", sizeof(context->vault_ticker));
+    context->vault_decimals = 18;
 
     // Return valid status.
     msg->result = ETH_PLUGIN_RESULT_OK;

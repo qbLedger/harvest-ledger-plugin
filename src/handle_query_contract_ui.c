@@ -16,19 +16,28 @@
     amountToString(eth_amount, eth_amount_size, WEI_TO_ETHER, "ETH ", msg->msg, msg->msgLength);
 } */
 
-// Set UI for "Receive" screen.
-// EDIT THIS: Adapt / remove this function to your needs.
 static void set_amount(ethQueryContractUI_t *msg, const context_t *context) {
 
     strlcpy(msg->title, "Amount", msg->titleLength);
 
-    uint8_t decimals = context->decimals;
-    const char *ticker = context->ticker;
+    uint8_t decimals;
+    const char *ticker;
 
-    // If the token look up failed, use the default network ticker along with the default decimals.
-    if (!context->token_found) {
-        decimals = WEI_TO_ETHER;
-        ticker = "";
+    switch (context->selectorIndex) {
+        case VAULT_DEPOSIT:
+            decimals = context->underlying_decimals;
+            ticker = context->underlying_ticker;
+            break;
+        case VAULT_WITHDRAW:
+            decimals = context->vault_decimals;
+            ticker = context->vault_ticker;
+            break;
+        default:
+            decimals = WEI_TO_ETHER;
+            ticker = "???";
+//             PRINTF("Selector Index not supported: %d\n", context->selectorIndex);
+//             msg->result = ETH_PLUGIN_RESULT_ERROR;
+//             return;
     }
 
     amountToString(context->amount,
@@ -39,8 +48,6 @@ static void set_amount(ethQueryContractUI_t *msg, const context_t *context) {
                    msg->msgLength);
 }
 
-// Set UI for "Beneficiary" screen.
-// EDIT THIS: Adapt / remove this function to your needs.
 static void set_destination_ui(ethQueryContractUI_t *msg, context_t *context) {
     strlcpy(msg->title, "Vault", msg->titleLength);
 
@@ -75,13 +82,12 @@ void handle_query_contract_ui(void *parameters) {
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
-    // EDIT THIS: Adapt the cases for the screens you'd like to display.
     switch (msg->screenIndex) {
         case 0:
-            set_destination_ui(msg, context);
+            set_amount(msg, context);
             break;
         case 1:
-            set_amount(msg, context);
+            set_destination_ui(msg, context);
             break;
         // Keep this
         default:

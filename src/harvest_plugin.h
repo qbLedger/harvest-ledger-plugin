@@ -31,9 +31,12 @@ extern const uint32_t HARVEST_SELECTORS[NUM_SELECTORS];
 typedef struct context_t {
     // For display.
     uint8_t amount[INT256_LENGTH];
-    char ticker[MAX_TICKER_LEN];
-    uint8_t decimals;
-    uint8_t token_found;
+
+    char underlying_ticker[MAX_TICKER_LEN];
+    uint8_t underlying_decimals;
+
+    char vault_ticker[MAX_TICKER_LEN];
+    uint8_t vault_decimals;
 
     // For parsing data.
     uint8_t next_param;  // Set to be the next param we expect to parse.
@@ -55,3 +58,12 @@ void handle_init_contract(void *parameters);
 void handle_finalize(void *parameters);
 void handle_provide_token(void *parameters);
 void handle_query_contract_id(void *parameters);
+
+
+typedef struct vault_info_t {
+    char *underlying_ticker;
+    uint8_t underlying_decimals;
+
+    char *vault_ticker;
+    uint8_t vault_decimals;
+} vault_info_t;

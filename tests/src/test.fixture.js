@@ -31,7 +31,7 @@ const nano_models: DeviceModel[] = [
     { name: 'nanos', letter: 'S', path: NANOS_PLUGIN_PATH, eth_path: NANOS_ETH_PATH },
     { name: 'nanosp', letter: 'SP', path: NANOSP_PLUGIN_PATH, eth_path: NANOSP_ETH_PATH },
     { name: 'nanox', letter: 'X', path: NANOX_PLUGIN_PATH, eth_path: NANOX_ETH_PATH }
-];
+].slice(2); // TODO remove slice
 
 
 const boilerplateJSON = generate_plugin_config();
@@ -58,7 +58,7 @@ function txFromEtherscan(rawTx) {
     rawTx = rawTx.slice(2);
 
     let txType = rawTx.slice(0, 2);
-    if (txType == "02" || txType == "01") {
+    if (txType === "02" || txType === "01") {
         // Remove "02" prefix
         rawTx = rawTx.slice(2);
     } else {
@@ -66,7 +66,7 @@ function txFromEtherscan(rawTx) {
     }
 
     let decoded = RLP.decode("0x" + rawTx);
-    if (txType != "") {
+    if (txType !== "") {
         decoded = decoded.slice(0, decoded.length - 3); // remove v, r, s
     } else {
         decoded[decoded.length - 1] = "0x"; // empty
