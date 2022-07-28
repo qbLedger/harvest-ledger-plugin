@@ -6,6 +6,7 @@
 
 // Number of selectors defined in this plugin. Should match the enum `selector_t`.
 #define NUM_SELECTORS 6
+#define STR_ADDRESS_LENGTH 43
 
 // Name of the plugin.
 #define PLUGIN_NAME "Harvest"
@@ -15,7 +16,6 @@
 typedef enum {
     VAULT_DEPOSIT = 0,
     VAULT_WITHDRAW,
-    VAULT_APPROVE,
     POOL_STAKE,
     POOL_GET_REWARD,
     POOL_EXIT
@@ -30,11 +30,11 @@ typedef enum {
 extern const uint32_t HARVEST_SELECTORS[NUM_SELECTORS];
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
-// EDIT THIS: This struct is used by your plugin to save the parameters you parse. You
-// will need to adapt this struct to your plugin.
 typedef struct context_t {
     // For display.
     uint8_t amount[INT256_LENGTH];
+
+    char contract_address[STR_ADDRESS_LENGTH];
 
     char underlying_ticker[MAX_TICKER_LEN];
     uint8_t underlying_decimals;
@@ -64,10 +64,11 @@ void handle_provide_token(void *parameters);
 void handle_query_contract_id(void *parameters);
 
 
-typedef struct vault_info_t {
+typedef struct contract_info_t {
+    char *address;
     char *underlying_ticker;
     uint8_t underlying_decimals;
 
     char *vault_ticker;
     uint8_t vault_decimals;
-} vault_info_t;
+} contract_info_t;

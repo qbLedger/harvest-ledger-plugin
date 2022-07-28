@@ -27,7 +27,6 @@
 // List of selectors supported by this plugin.
 static const uint32_t VAULT_DEPOSIT_SELECTOR = 0xb6b55f25;
 static const uint32_t VAULT_WITHDRAW_SELECTOR = 0x2e1a7d4d;
-static const uint32_t VAULT_APPROVE_SELECTOR = 0x095ea7b3;
 static const uint32_t POOL_STAKE_SELECTOR = 0xa694fc3a;
 static const uint32_t POOL_GET_REWARD_SELECTOR = 0x3d18b912;
 static const uint32_t POOL_EXIT_SELECTOR = 0xe9fad8ee;
@@ -37,11 +36,9 @@ static const uint32_t POOL_EXIT_SELECTOR = 0xe9fad8ee;
 const uint32_t HARVEST_SELECTORS[NUM_SELECTORS] = {
     VAULT_DEPOSIT_SELECTOR,
     VAULT_WITHDRAW_SELECTOR,
-    VAULT_APPROVE_SELECTOR,
     POOL_STAKE_SELECTOR,
     POOL_GET_REWARD_SELECTOR,
     POOL_EXIT_SELECTOR
-    // TODO POOLS Stake, Exit, Get Reward ex pool: https://etherscan.io/address/0x15d3A64B2d5ab9E152F16593Cdebc4bB165B5B4A
 };
 
 // Function to dispatch calls from the ethereum app.
