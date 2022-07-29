@@ -65,7 +65,6 @@ void handle_query_contract_id(void *parameters);
 
 
 typedef struct contract_info_t {
-    char *address;
     char *underlying_ticker;
     uint8_t underlying_decimals;
 
