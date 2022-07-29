@@ -4,22 +4,30 @@
 
 #define CONTRACTS_LENGTH 1
 // TODO fill in CONTRACTS array by actual onchain data
-const contract_info_t CONTRACTS[CONTRACTS_LENGTH] = { // Tickers should have trailing space
-    {"0xab7fa2b2985bccfc13c6d86b1d5a17486ab1e04c", "DAI ", 18, "fDAI ", 18}
+const contract_info_t CONTRACTS[CONTRACTS_LENGTH] = {
+    // Tickers should have trailing space
+//     {"0xab7fa2b2985bccfc13c6d86b1d5a17486ab1e04c", "DAI ", 18, "fDAI ", 18}
+    {"0xab7FA2B2985BCcfC13c6D86b1D5A17486ab1e04C", "DAI ", 18, "fDAI ", 18}
 };
 
-contract_info_t get_contract_info(char *addr) {
+
+contract_info_t *get_contract_info(char *addr) {
     PRINTF("get_contract_info addr: %s\n", addr);
+    // addr to lower case
+//     for(uint8_t i = 0; addr[i]; i++) addr[i] = tolower(addr[i]);
+    PRINTF("contract : %s\n", addr);
     for (uint8_t c = 0; c < CONTRACTS_LENGTH; c++) {
-        contract_info_t info = CONTRACTS[c];
-        char *a = info.address;
-        PRINTF("a: %s\n", a);
-//         if (strcmp(addr, a) == 0) // If uncomment this line, then tests fails before plugin init
-            return info;
+        PRINTF("c: %d\n", c);
+        char *a = CONTRACTS[c].address;
+        PRINTF("list addr: %s\n", a);
+//         if (strcmp(addr, a) == 0)
+        if (strcasecmp(addr, a) == 0)
+            return &CONTRACTS[c];
     }
+
+    const contract_info_t EMPTY_CONTRACT_INFO = {"", "", 18, "", 18};
     // when not found
-    contract_info_t empty = {"", "", 18, "", 18};
-    return empty;
+    return &EMPTY_CONTRACT_INFO;
 
 }
 
@@ -45,14 +53,13 @@ void handle_finalize(void *parameters) {
     PRINTF("MSG Address: %s\n", addr);
 
     PRINTF("handle_finalize before get_contract_info\n");
-    contract_info_t info = get_contract_info(addr);
-    PRINTF("info.address %s\n", info.address);
-//     contract_info_t info = {"", "UND ", 18, "fUND ", 18};
+    contract_info_t *info = get_contract_info(addr);
+    PRINTF("info.address %s\n", info->address);
 
-    strlcpy(context->underlying_ticker, info.underlying_ticker, sizeof(context->underlying_ticker));
-    context->underlying_decimals = info.underlying_decimals;
-    strlcpy(context->vault_ticker, info.vault_ticker, sizeof(context->vault_ticker));
-    context->vault_decimals = info.vault_decimals;
+    strlcpy(context->underlying_ticker, info->underlying_ticker, sizeof(context->underlying_ticker));
+    context->underlying_decimals = info->underlying_decimals;
+    strlcpy(context->vault_ticker, info->vault_ticker, sizeof(context->vault_ticker));
+    context->vault_decimals = info->vault_decimals;
 
     msg->uiType = ETH_UI_TYPE_GENERIC;
     msg->result = ETH_PLUGIN_RESULT_OK;
