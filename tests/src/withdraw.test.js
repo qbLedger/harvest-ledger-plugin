@@ -1,4 +1,4 @@
-import {testAmount1_18, testRawTx, testTxWithAmount} from "./tools";
+import {testAmount1_6, testRawTx, testTxWithAmount} from "./tools";
 
 const method = 'withdraw';
 
@@ -9,5 +9,5 @@ testRawTx(method, rawTx, 2); // max fees splits to 3 screens
 
 // Test constructed tx
 const abi = require('../harvest/abis/harvest_vault.json');
-const contractAddr = "0xab7fa2b2985bccfc13c6d86b1d5a17486ab1e04c";
-testTxWithAmount(contractAddr, abi, method, testAmount1_18);
+const contractAddr = "0xf0358e8c3CD5Fa238a29301d0bEa3D63A17bEdBE";
+testTxWithAmount(contractAddr, abi, method, testAmount1_6);

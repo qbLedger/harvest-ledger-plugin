@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import { parseEther, parseUnits} from "ethers/lib/utils";
 
 export const testAmount1_18 = parseUnits("1.2345", '18');
+export const testAmount1_6 = parseUnits("1.2345", '6');
 
 export function testRawTx(method, rawTx, additionalScreensS = 0, additionalScreensSPX = 0) {
   nano_models.forEach(function (model) {
