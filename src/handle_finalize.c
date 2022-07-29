@@ -14,7 +14,6 @@ const contract_info_t CONTRACTS[CONTRACTS_LENGTH] = {
 contract_info_t *get_contract_info(char *addr) {
     PRINTF("get_contract_info addr: %s\n", addr);
     // addr to lower case
-//     for(uint8_t i = 0; addr[i]; i++) addr[i] = tolower(addr[i]);
     PRINTF("contract : %s\n", addr);
     for (uint8_t c = 0; c < CONTRACTS_LENGTH; c++) {
         PRINTF("c: %d\n", c);
