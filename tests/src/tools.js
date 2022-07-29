@@ -7,7 +7,7 @@ import { parseEther, parseUnits} from "ethers/lib/utils";
 export const testAmount1_18 = parseUnits("1.2345", '18');
 export const testAmount1_6 = parseUnits("1.2345", '6');
 
-export function testRawTx(method, rawTx, additionalScreensS = 0, additionalScreensSPX = 0) {
+export function testRawTx(method, rawTx, screensS = 5, screensSPX = 5) {
   nano_models.forEach(function (model) {
     test('[Nano ' + model.letter + '] '+method+' raw_tx', zemu(model, async (sim, eth) => {
 
@@ -19,8 +19,8 @@ export function testRawTx(method, rawTx, additionalScreensS = 0, additionalScree
       );
 
       const right_clicks = model.letter === 'S'
-        ? 5 + additionalScreensS
-        : 5 + additionalScreensSPX;
+        ? screensS
+        : screensSPX;
 
       // Wait for the application to actually load and parse the transaction
       await waitForAppScreen(sim);
@@ -33,16 +33,15 @@ export function testRawTx(method, rawTx, additionalScreensS = 0, additionalScree
 }
 
 // Test from constructed transaction
-export function testTxWithAmount(contractAddr, abi, method, amount, additionalScreensS = 0, additionalScreensSPX = 0) {
+export function testTx(contractAddr, abi, method, params=[], screensS = 5, screensSPX = 5) {
 
   nano_models.forEach(function (model) {
     test('[Nano ' + model.letter + '] '+method, zemu(model, async (sim, eth) => {
       const contract = new ethers.Contract(contractAddr, abi);
 
       // Constants used to create the transaction
-      // const amount = parseUnits("1.2345", '18');
 
-      const {data} = await contract.populateTransaction[method](amount);
+      const {data} = await contract.populateTransaction[method](...params);
 
       // Get the generic transaction template
       let unsignedTx = genericTx;
@@ -62,8 +61,8 @@ export function testTxWithAmount(contractAddr, abi, method, amount, additionalSc
       );
 
       const right_clicks = model.letter === 'S'
-        ? 5 + additionalScreensS
-        : 5 + additionalScreensSPX;
+        ? screensS
+        : screensSPX;
 
       // Wait for the application to actually load and parse the transaction
       await waitForAppScreen(sim);
