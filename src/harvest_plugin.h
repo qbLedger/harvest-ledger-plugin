@@ -65,9 +65,10 @@ void handle_query_contract_id(void *parameters);
 
 
 typedef struct contract_info_t {
+    // underlying
     char *underlying_ticker;
     uint8_t underlying_decimals;
-
+    // vault
     char *vault_ticker;
     uint8_t vault_decimals;
 } contract_info_t;

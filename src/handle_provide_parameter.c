@@ -39,6 +39,7 @@ void handle_provide_parameter(void *parameters) {
     switch (context->selectorIndex) {
         case VAULT_DEPOSIT:
         case VAULT_WITHDRAW:
+        case POOL_STAKE:
             handle_amount(msg, context);
             break;
         default:
