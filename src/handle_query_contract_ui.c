@@ -54,7 +54,6 @@ static void set_destination_ui(ethQueryContractUI_t *msg, context_t *context) {
         m + 2,  // +2 here because we've already prefixed with '0x'.
         msg->pluginSharedRW->sha3,
         chainId);
-    PRINTF("MSG Address: %s\n", msg->msg); // TODO remove
 
     // make short representation of the address
     m[6] = '.';

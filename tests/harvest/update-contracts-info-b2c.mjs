@@ -1,4 +1,5 @@
 // Run this script to update Harvest vaults and pools to contracts-info.txt and b2c.json
+
 import fetch from 'node-fetch';
 import fs from 'fs';
 import {utils} from 'ethers';

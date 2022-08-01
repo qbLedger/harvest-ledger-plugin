@@ -7,4 +7,4 @@
 This script will update vault and pools from the Harvest API 
 and write it to `tests/harvest/b2c.json` and `src/contracts-info.txt`.
 
-After that rebuild and test like described at `README.md`.
+Then rebuild and test like described at `README.md`.
