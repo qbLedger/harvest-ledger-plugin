@@ -16,6 +16,10 @@ bool eq(const char *p1, const char *p2)
 
     return (c1 - c2) == 0;
 }
+
+
+// I have strange plugin crash with Signal 11 when tried read from predefined array of contract_info_t
+// so used simple if-else-if chain
 #define _HARVEST(address, underlying_ticker, underlying_decimals, vault_ticker, vault_decimals) \
      if (eq(a,address)) return (contract_info_t){underlying_ticker, underlying_decimals, vault_ticker, vault_decimals}; else
 
