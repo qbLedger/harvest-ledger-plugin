@@ -6,7 +6,7 @@ import {utils} from 'ethers';
 
 const VAULTS_URL = 'https://api-ui.harvest.finance/vaults?key=41e90ced-d559-4433-b390-af424fdc76d6'
 
-const b2cFile = 'harvest/b2c.json';
+const abisPath = 'harvest/';
 const contractsInfoFile = '../src/contracts-info.txt';
 
 function b2cTemplate(chainId, contracts) {
@@ -64,38 +64,46 @@ async function updateContractsInfo(vaultsUrl) {
   // console.log('vaults', vaults);
 
   let contractsInfo = [];
-  const contracts = [];
 
   for (const id in vaults) {
     const vault = vaults[id];
 
     if (vault.inactive) continue;
 
-    contracts.push(b2cVaultTemplate(vault));
+    saveContract(abisPath, b2cVaultTemplate(vault));
+
     // if vault have rewardPool then add its contract
     contractsInfo.push(contractsInfoVaultTemplate(vault));
     if (vault.rewardPool) {
-      contracts.push(b2cPoolTemplate(vault));
+      saveContract(abisPath, b2cPoolTemplate(vault));
       contractsInfo.push(contractsInfoPoolTemplate(vault));
     }
   }
 
-  const callback = (err) => {
-    if (err)
-      console.error(err);
-    else
-      console.log('SUCCESS :)')
-  };
-
-  const chainId = 1; // ETH MAINNET
-  const b2c = b2cTemplate(chainId, contracts);
-  console.log('b2c', b2c);
-  fs.writeFile(b2cFile, JSON.stringify(b2c, undefined, '\t'), callback);
-
   const ci = contractsInfo.join('\n');
   console.log('ci\n', ci);
-  fs.writeFile(contractsInfoFile, ci, callback);
+  saveString(contractsInfoFile, ci);
 
+}
+
+function saveContract(path, contract) {
+  const chainId = 1; // ETH MAINNET
+  const b2c = b2cTemplate(chainId, [contract]);
+  const filename = path + '/' + contract.address + 'abi.json';
+  return saveObject(filename, b2c);
+}
+
+
+
+function saveObject(filename, obj) {
+  return saveString(filename, JSON.stringify(obj, undefined, '\t'))
+}
+
+
+function saveString(filename, text) {
+  return fs.writeFile(filename, text, err => {
+    if (err) console.error(err);
+  });
 }
 
 updateContractsInfo(VAULTS_URL).then();

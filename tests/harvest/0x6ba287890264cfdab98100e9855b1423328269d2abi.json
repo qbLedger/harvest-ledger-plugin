@@ -1,0 +1,22 @@
+{
+	"chainId": 1,
+	"contracts": [
+		{
+			"address": "0x6ba287890264cfdab98100e9855b1423328269d2",
+			"contractName": "Vault",
+			"selectors": {
+				"0xb6b55f25": {
+					"erc20OfInterest": [],
+					"method": "deposit",
+					"plugin": "Harvest"
+				},
+				"0x2e1a7d4d": {
+					"erc20OfInterest": [],
+					"method": "withdraw",
+					"plugin": "Harvest"
+				}
+			}
+		}
+	],
+	"name": "Harvest"
+}
