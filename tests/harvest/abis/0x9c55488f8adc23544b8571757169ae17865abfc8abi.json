@@ -1,0 +1,27 @@
+{
+	"chainId": 137,
+	"contracts": [
+		{
+			"address": "0x9c55488f8adc23544b8571757169ae17865abfc8",
+			"contractName": "NoMintRewardPool",
+			"selectors": {
+				"0xa694fc3a": {
+					"erc20OfInterest": [],
+					"method": "stake",
+					"plugin": "Harvest"
+				},
+				"0x3d18b912": {
+					"erc20OfInterest": [],
+					"method": "getReward",
+					"plugin": "Harvest"
+				},
+				"0xe9fad8ee": {
+					"erc20OfInterest": [],
+					"method": "exit",
+					"plugin": "Harvest"
+				}
+			}
+		}
+	],
+	"name": "Harvest"
+}

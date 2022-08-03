@@ -7,7 +7,7 @@ import {utils} from 'ethers';
 const VAULTS_URL = 'https://api-ui.harvest.finance/vaults?key=41e90ced-d559-4433-b390-af424fdc76d6'
 
 const abisPath = 'harvest/abis/';
-const b2cFile = 'harvest/b2c.json';
+const b2cFile = 'harvest/b2c';
 const contractsInfoFile = '../src/contracts-info.txt';
 
 function b2cTemplate(chainId, contracts) {
@@ -61,9 +61,13 @@ async function fetchJson(url) {
 async function updateContractsInfo(vaultsUrl) {
   const allVaults = await fetchJson(vaultsUrl);
 
-  const vaults = allVaults.eth;
-  // console.log('vaults', vaults);
+  await updateContractsForNetwork(1,   allVaults.eth);
+  await updateContractsForNetwork(56,  allVaults.bsc);
+  await updateContractsForNetwork(137, allVaults.matic);
 
+}
+
+async function updateContractsForNetwork(chainId, vaults) {
   let contractsInfo = [];
   const contracts = [];
 
@@ -72,13 +76,13 @@ async function updateContractsInfo(vaultsUrl) {
 
     if (vault.inactive) continue;
 
-    saveContract(abisPath, b2cVaultTemplate(vault));
+    saveContract(abisPath, b2cVaultTemplate(vault), chainId);
     contracts.push(b2cVaultTemplate(vault));
 
     // if vault have rewardPool then add its contract
     contractsInfo.push(contractsInfoVaultTemplate(vault));
     if (vault.rewardPool) {
-      saveContract(abisPath, b2cPoolTemplate(vault));
+      saveContract(abisPath, b2cPoolTemplate(vault), chainId);
       contracts.push(b2cPoolTemplate(vault));
       contractsInfo.push(contractsInfoPoolTemplate(vault));
     }
@@ -88,15 +92,16 @@ async function updateContractsInfo(vaultsUrl) {
   console.log('ci\n', ci);
   saveString(contractsInfoFile, ci);
 
-  saveB2C(b2cFile, contracts);
+  saveB2C(b2cFile, contracts, chainId);
 }
 
-function saveB2C(filename, contracts, chainId=1) {
+function saveB2C(filename, contracts, chainId) {
   const b2c = b2cTemplate(chainId, contracts);
-  return saveObject(filename, b2c);
+  const id = chainId === 1 ? '' : '.'+chainId;
+  return saveObject(filename + id + '.json', b2c);
 }
 
-function saveContract(path, contract, chainId=1) {
+function saveContract(path, contract, chainId) {
   const b2c = b2cTemplate(chainId, [contract]);
   const filename = path + '/' + contract.address + 'abi.json';
   return saveObject(filename, b2c);
