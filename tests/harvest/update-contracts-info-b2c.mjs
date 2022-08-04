@@ -1,6 +1,6 @@
 // Run this script to update Harvest vaults and pools to contracts-info.txt and b2c.json
 
-import fetch from 'node-fetch';
+import fetch from 'isomorphic-fetch';
 import fs from 'fs';
 import {utils} from 'ethers';
 import VaultAbi from './abis/harvest_vault.json';
@@ -91,7 +91,6 @@ async function updateContractsForNetwork(chainId, vaults) {
   }
 
   const ci = contractsInfo.join('\n');
-  console.log('ci\n', ci);
   saveString(contractsInfoFile, ci);
 
   saveB2C(b2cFile, contracts, chainId);
@@ -115,6 +114,7 @@ function saveObject(filename, obj) {
 function saveString(filename, text) {
   return fs.writeFile(filename, text, err => {
     if (err) console.error(err);
+    else console.log('saved', filename);
   });
 }
 
