@@ -3,7 +3,8 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
 import {utils} from 'ethers';
-
+import VaultAbi from './abis/harvest_vault.json';
+import PoolAbi from './abis/harvest_pool.json';
 const VAULTS_URL = 'https://api-ui.harvest.finance/vaults?key=41e90ced-d559-4433-b390-af424fdc76d6'
 
 const abisPath = 'harvest/abis/';
@@ -76,13 +77,14 @@ async function updateContractsForNetwork(chainId, vaults) {
 
     if (vault.inactive) continue;
 
-    saveContract(abisPath, b2cVaultTemplate(vault), chainId);
+    saveContract(abisPath, vault.vaultAddress.toLowerCase(), VaultAbi);
     contracts.push(b2cVaultTemplate(vault));
 
     // if vault have rewardPool then add its contract
     contractsInfo.push(contractsInfoVaultTemplate(vault));
+
     if (vault.rewardPool) {
-      saveContract(abisPath, b2cPoolTemplate(vault), chainId);
+      saveContract(abisPath, vault.rewardPool.toLowerCase(), PoolAbi);
       contracts.push(b2cPoolTemplate(vault));
       contractsInfo.push(contractsInfoPoolTemplate(vault));
     }
@@ -101,10 +103,9 @@ function saveB2C(filename, contracts, chainId) {
   return saveObject(filename + id + '.json', b2c);
 }
 
-function saveContract(path, contract, chainId) {
-  const b2c = b2cTemplate(chainId, [contract]);
-  const filename = path + '/' + contract.address + 'abi.json';
-  return saveObject(filename, b2c);
+function saveContract(path, address, abi) {
+  const filename = path + '/' + address + '.abi.json';
+  return saveObject(filename, abi);
 }
 
 function saveObject(filename, obj) {

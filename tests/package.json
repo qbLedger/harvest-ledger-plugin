@@ -7,7 +7,7 @@
     "build": "babel src/ -d lib/",
     "prepublish": "yarn run build",
     "test": "jest src --verbose --runInBand --detectOpenHandles",
-    "harvest-update": "node ../tests/harvest/update-contracts-info-b2c.mjs"
+    "harvest-update": "node --experimental-json-modules ../tests/harvest/update-contracts-info-b2c.mjs"
   },
   "author": "",
   "license": "ISC",
